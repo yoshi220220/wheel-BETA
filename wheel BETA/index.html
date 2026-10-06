@@ -1,0 +1,141 @@
+<!DOCTYPE html><html><head><meta charset="UTF-8"><title>wheel - BETA</title><link rel="icon" href="10909-removebg-preview.png" type="image/png">
+<meta name="viewport" content="width=device-width, initial-scale=1.0"><link rel="manifest" href="manifest.json"><style>:root {  --bg-color: #202124;  --header-bg: #1f1f1f;  --panel-bg: #2a2a2a;  --input-bg: #3c4043;  --search-bg: #303134;  --text-color: #ffffff;  --subtext-color: #e8eaed;  --border-color: #5f6368;}
+/* ライトモード定義 */body.light-mode {  --bg-color: #f8f9fa;  --header-bg: #e8eaed;  --panel-bg: #ffffff;  --input-bg: #f1f3f4;  --search-bg: #ffffff;  --text-color: #202124;  --subtext-color: #3c4043;  --border-color: #dadce0;}
+html, body {  margin: 0;  padding: 0;  height: 100%;  font-family: system-ui;  background-color: var(--bg-color);  background-size: cover;  background-position: center;  background-repeat: no-repeat;  color: var(--text-color);  overflow-x: hidden;  overflow-y: auto;  transition: background-color 0.3s, color 0.3s;}
+/* ===== タブ ===== */#tabs {  display: flex;  align-items: center;  background: var(--header-bg);  height: 38px;  padding: 0 6px;  gap: 6px;  overflow-x: auto;  -webkit-overflow-scrolling: touch;}
+/* 左端の「＋ 新規タブ」ボタン */#newTab {  display: flex;  align-items: center;  gap: 4px;  color: white;  padding: 0 10px;  cursor: pointer;  font-size: 13px;  user-select: none;  flex-shrink: 0;}
+/* タブコンテナ */#tabContainer {  display: flex;  align-items: center;  gap: 6px;}
+/* 通常版に合わせたタブ設定 */.tab {  display: flex;  align-items: center;  gap: 6px;  padding: 6px 10px;  border-radius: 10px 10px 0 0;  background: #2a2a2a;  color: #bbb;  font-size: 12px;  min-width: 130px;  max-width: 180px;  cursor: pointer;  flex-shrink: 0;}
+.tab.active {  background: white;  color: #111;}
+/* タブ内ロゴ画像の設定 (通常版と同じ 14px x 14px) */.tab img {  width: 14px;  height: 14px;  object-fit: contain;  flex-shrink: 0;}
+.tab-title {  flex: 1;  overflow: hidden;  white-space: nowrap;  text-overflow: ellipsis;}
+.tab-close {  color: #ff5f57;  cursor: pointer;}
+/* ===== ツールバー ===== */#toolbar {  display: flex;  align-items: center;  gap: 8px;  padding: 6px;  background: var(--panel-bg);}
+button {  background: var(--input-bg);  border: none;  color: var(--text-color);  padding: 5px 8px;  border-radius: 5px;  cursor: pointer;  font-size: 14px;}
+.searchBar {  flex: 1;  display: flex;  align-items: center;  gap: 8px;}
+#url {  flex: 1;  min-width: 200px;  padding: 7px 10px;  border-radius: 18px;  border: 1px solid var(--border-color);  outline: none;  background: var(--input-bg);  color: var(--text-color);  font-size: 14px;}
+#rightArea {  margin-left: auto;  display: flex;  align-items: center;  gap: 10px;}
+#userIcon {  width: 30px;  height: 30px;  background: var(--input-bg);  border-radius: 50%;  display: flex;  align-items: center;  justify-content: center;  cursor: pointer;  font-size: 14px;  color: var(--text-color);}
+/* ===== ホーム画面とGoogle風検索窓 ===== */#home {  display: flex;  flex-direction: column;  align-items: center;  justify-content: center;  padding: 30px 16px;  box-sizing: border-box;}
+.logo-container {  display: flex;  align-items: center;  justify-content: center;  gap: 14px;}
+/* 通常版と同じサイズ (90px) に設定 */.logo-img {  width: 90px;  height: auto;  object-fit: contain;}
+/* 通常版と同じサイズ (60px) に設定 */.logo-text {  font-family: 'Yu Mincho', 'Hiragino Mincho ProN', serif;  font-size: 60px;  font-weight: 700;  letter-spacing: 3px;  text-shadow: 0 2px 10px rgba(0,0,0,0.5);  color: var(--text-color);  line-height: 1;}
+.googleSearch {  position: relative;  display: flex;  align-items: center;  width: 100%;  max-width: 540px;  background: var(--search-bg);  border-radius: 28px;  padding: 3px;  box-sizing: border-box;  height: 46px;  overflow: hidden;  box-shadow: 0 2px 8px rgba(0,0,0,0.2);}
+.googleSearch:focus-within {  box-shadow: 0 0 0 2px #8ab4f8;}
+.googleSearch input {  flex: 1;  border: none;  outline: none;  background: transparent;  color: var(--text-color);  font-size: 15px;  padding: 0 16px;  height: 100%;}
+/* AIボタン */#aiSearchBtn {  position: relative;  border: none;  background: var(--panel-bg);  color: var(--text-color);  height: 100%;  padding: 0 16px;  border-radius: 22px;  cursor: pointer;  font-weight: 300;  font-size: 12px;  letter-spacing: 0.5px;  overflow: hidden;  z-index: 1;  display: flex;  align-items: center;  justify-content: center;  box-shadow: inset 0 2px 6px rgba(0,0,0,0.3);  transition: transform 0.2s, color 0.2s;  flex-shrink: 0;}
+#aiSearchBtn:hover {  transform: translateY(-1px);}
+#aiSearchBtn::before {  content: "";  position: absolute;  inset: 0px;  border-radius: 22px;  background: linear-gradient(90deg, #8b5cf6, #3b82f6, #06b6d4, #8b5cf6);  background-size: 300% 300%;  animation: glowMove 3s linear infinite;  filter: blur(2px);  z-index: -1;}
+#aiSearchBtn::after {  content: "";  position: absolute;  inset: 1px;  background: var(--panel-bg);  border-radius: 21px;  z-index: -1;}
+@keyframes glowMove {  0% { background-position: 0% 50%; }  50% { background-position: 100% 50%; }  100% { background-position: 0% 50%; }}
+/* ===== ショートカット グリッド ===== */.shortcut-grid {  display: grid;  grid-template-columns: repeat(5, 1fr);  gap: 8px;  margin-top: 6px;}
+.shortcut-item {  display: flex;  flex-direction: column;  align-items: center;  justify-content: center;  background: var(--panel-bg);  padding: 8px 4px;  border-radius: 10px;  cursor: pointer;  transition: background 0.2s, transform 0.1s;  position: relative;  user-select: none;  box-shadow: 0 1px 4px rgba(0,0,0,0.2);}
+.shortcut-item:hover {  filter: brightness(1.15);  transform: translateY(-2px);}
+.shortcut-icon {  width: 26px;  height: 26px;  border-radius: 50%;  background: var(--input-bg);  display: flex;  align-items: center;  justify-content: center;  margin-bottom: 4px;  font-weight: bold;  font-size: 12px;  overflow: hidden;}
+.shortcut-icon img {  width: 16px;  height: 16px;  object-fit: contain;}
+.shortcut-label {  font-size: 10px;  color: var(--subtext-color);  text-align: center;  white-space: nowrap;  overflow: hidden;  text-overflow: ellipsis;  width: 100%;}
+.shortcut-add {  border: 1px dashed var(--border-color);  background: transparent;}
+/* ===== iframe ===== */#views { position: relative; }iframe {  width: 100%;  height: calc(100vh - 80px);  border: none;  display: none;  background: white;}
+/* ===== AI パネル ===== */#aiPanel {  position: fixed;  right: 20px;  bottom: 20px;  width: 320px;  max-height: calc(100vh - 100px);  height: 400px;  background: var(--bg-color);  border: 1px solid var(--border-color);  border-radius: 12px;  display: none;  flex-direction: column;  overflow: hidden;  box-shadow: 0 10px 30px rgba(0,0,0,0.5);  z-index: 1000;}
+#aiHeader {  background: var(--panel-bg);  padding: 10px;  color: var(--text-color);  display: flex;  justify-content: space-between;}
+#aiChat {  flex: 1;  padding: 10px;  overflow-y: auto;  color: var(--text-color);  font-size: 13px;}
+#aiInputArea {  display: flex;  padding: 8px;  gap: 5px;  background: var(--panel-bg);}
+#aiInput {  flex: 1;  padding: 6px;  border: none;  border-radius: 6px;  background: var(--input-bg);  color: var(--text-color);}
+.message { display: flex; margin: 6px 0; }.message.user { justify-content: flex-end; }.message.ai { justify-content: flex-start; }
+.bubble {  max-width: 75%;  padding: 8px 10px;  border-radius: 14px;  font-size: 13px;  line-height: 1.4;  word-break: break-word;  white-space: pre-wrap;}.user .bubble { background: #8ab4f8; color: black; border-bottom-right-radius: 4px; }.ai .bubble { background: var(--input-bg); color: var(--text-color); border-bottom-left-radius: 4px; }
+/* ===== モーダル ===== */.modal {  position: fixed;  top: 0; left: 0;  width: 100%; height: 100%;  background: rgba(0,0,0,0.6);  backdrop-filter: blur(8px);  display: none;  align-items: center;  justify-content: center;  z-index: 2000;}
+.modal-box {  width: 320px;  background: var(--bg-color);  border: 1px solid var(--border-color);  border-radius: 14px;  box-shadow: 0 10px 30px rgba(0,0,0,0.6);  overflow: hidden;  color: var(--text-color);}
+.settings-box {  position: relative;  width: 700px;  height: 400px;  background: var(--bg-color);  border: 1px solid var(--border-color);  border-radius: 14px;  display: flex;  overflow: hidden;}
+.settings-menu {  width: 180px;  background: var(--panel-bg);  padding: 10px;  display: flex;  flex-direction: column;  gap: 10px;}
+.settings-menu div {  padding: 10px;  border-radius: 8px;  cursor: pointer;  color: var(--text-color);}.settings-menu div:hover { background: var(--input-bg); }
+.settings-content { flex: 1; padding: 20px; color: var(--text-color); }.settings-header { position: absolute; top: 10px; right: 15px; font-size: 18px; cursor: pointer; color: #aaa; }
+.modal-header { display: flex; justify-content: space-between; align-items: center; padding: 14px 18px; background: var(--panel-bg); }.modal-content { padding: 20px; display: flex; flex-direction: column; gap: 12px; }.modal-content input, .modal-content select { padding: 10px; border-radius: 8px; border: 1px solid var(--border-color); background: var(--search-bg); color: var(--text-color); }
+.primary { margin-top: 10px; padding: 10px; border-radius: 20px; border: none; background: #8ab4f8; color: black; font-weight: bold; cursor: pointer; }
+/* ===== モバイル対応 ===== */#bottomBar { display: none; }
+@media (max-width: 600px) {  #toolbar { flex-wrap: wrap; gap: 6px; }  .searchBar { width: 100%; }  #url { min-width: 0; width: 100%; }  #rightArea { width: 100%; justify-content: space-between; }  #tabs { height: 44px; }  .tab { min-width: 90px; font-size: 10px; }  iframe { height: calc(100vh - 130px); }  #aiPanel { width: 90%; height: 60%; right: 5%; bottom: 60px; }  .settings-box { width: 90%; height: 80%; flex-direction: column; }  .settings-menu { width: 100%; flex-direction: row; }  #bottomBar {    display: flex;    position: fixed;    bottom: 0;    width: 100%;    background: var(--panel-bg);    justify-content: space-around;    padding: 8px;    z-index: 999;  }}</style></head>
+<body>
+<!-- タブバー --><div id="tabs">  <div id="newTab">＋ 新規タブ</div>  <div id="tabContainer"></div></div>
+<!-- ツールバー --><div id="toolbar">  <button onclick="back()">←</button>  <button onclick="forward()">→</button>  <button onclick="addBookmark()">★</button>
+  <div class="searchBar">    <input id="url" placeholder="検索またはURLを入力" onkeydown="if(event.key==='Enter')go()">    <button onclick="go()">検索</button>  </div>
+  <div id="rightArea">    <button onclick="openSettings()">⚙</button>    <div id="userIcon" onclick="openLogin()">👤</div>  </div></div>
+<!-- 表示領域 --><div id="views"></div>
+<!-- ホーム画面 --><div id="home">  <!-- 通常版のロゴサイズ (90px / 60px) -->  <div class="logo-container">    <img src="10908-removebg-preview.png" class="logo-img" onerror="this.style.display='none'">    <span class="logo-text">wheel<span style="font-size: 24px; margin-left: 8px; opacity: 0.8;">BETA</span></span>  </div>
+  <div style="height:20px"></div>
+  <!-- Google風検索窓 -->  <div class="googleSearch">    <input id="searchInput" placeholder="検索またはURLを入力" onkeydown="if(event.key==='Enter')goHome()">    <button id="aiSearchBtn" onclick="toggleAI()">AI モード</button>  </div>
+  <!-- 人気ランキング -->  <div style="width:100%; max-width:540px; margin-top:16px;">    <h3 style="font-size:13px; margin-bottom:8px; color:var(--subtext-color);">🔥 人気上昇ランキング</h3>    <div id="rankingList" style="background:var(--panel-bg); padding:8px 12px; border-radius:10px; box-shadow:0 1px 4px rgba(0,0,0,0.2);"></div>  </div>
+  <!-- カスタムショートカット -->  <div style="width:100%; max-width:540px; margin-top:14px;">    <h3 style="font-size:13px; margin-bottom:8px; color:var(--subtext-color);">⚡ ショートカット</h3>    <div id="shortcutList" class="shortcut-grid"></div>  </div></div>
+<!-- ショートカット追加モーダル --><div id="shortcutModal" class="modal">  <div class="modal-box">    <div class="modal-header">      <span>ショートカットを追加</span>      <span onclick="closeShortcutModal()" style="cursor:pointer;">×</span>    </div>    <div class="modal-content">      <input id="scName" placeholder="名前 (例: YouTube)">      <input id="scUrl" placeholder="URL (例: https://youtube.com)">      <button onclick="saveShortcut()" class="primary">追加</button>    </div>  </div></div>
+<!-- 設定画面 --><div id="settingsModal" class="modal">  <div class="settings-box">    <div class="settings-header" onclick="closeSettings()">✕</div>    <div class="settings-menu">      <div onclick="showSettingTab('appearance')">外観</div>      <div onclick="showSettingTab('aiSettings')">AI</div>      <div onclick="showSettingTab('account')">アカウント</div>    </div>    <div class="settings-content">      <div id="appearance" class="tab-content" style="display:flex; flex-direction:column; gap:10px;">        <h3>外観設定</h3>        <label>背景色</label>        <input type="color" id="bgColor" value="#202124">                <label>カラーモード</label>        <select id="themeMode">          <option value="dark">ダーク</option>          <option value="light">ライト</option>        </select>                <label>背景画像</label>        <input type="file" id="bgImage" accept="image/*">        <button onclick="removeBgImage()" style="background:#ff5f57; margin-top:5px;">背景画像を消去</button>
+        <button onclick="applySettings()" class="primary">保存して適用</button>      </div>
+      <div id="aiSettings" class="tab-content" style="display:none; flex-direction:column; gap:10px;">        <h3>AI 設定</h3>        <p>ルールの更新やアシスタントの設定を行います。</p>      </div>
+      <div id="account" class="tab-content" style="display:none; flex-direction:column; gap:10px;">        <h3>アカウント</h3>        <p id="accountInfo">未ログイン</p>      </div>    </div>  </div></div>
+<!-- ログインモーダル --><div id="loginModal" class="modal">  <div class="modal-box">    <div class="modal-header">      <span>ログイン</span>      <span onclick="closeLogin()" class="close-btn" style="cursor:pointer;">×</span>    </div>    <div class="modal-content">      <input id="username" placeholder="ユーザー名">      <input id="password" type="password" placeholder="パスワード">      <button onclick="login()" class="primary">ログイン</button>    </div>  </div></div>
+<!-- AIパネル --><div id="aiPanel">  <div id="aiHeader">    <span>AI Assistant</span>    <span onclick="toggleAI()" style="cursor:pointer;">✕</span>  </div>  <div id="aiChat"></div>  <div id="aiInputArea">    <input id="aiInput" placeholder="質問を入力" onkeydown="if(event.key==='Enter')sendAI()">    <button onclick="sendAI()">送信</button>  </div></div>
+<!-- モバイル用ボトムバー --><div id="bottomBar">  <button onclick="back()">←</button>  <button onclick="forward()">→</button>  <button onclick="addTab()">＋</button>  <button onclick="toggleAI()">AI</button></div>
+<script>let tabs = [];let current = -1;
+const trendPool = [  "YouTube", "Google", "Amazon", "X (Twitter)", "Yahoo! JAPAN",  "ChatGPT", "Wikipedia", "Netflix", "Instagram", "TikTok",  "Weather", "GitHub", "Prime Video", "Discord"];
+const defaultShortcuts = [  { name: "YouTube", url: "https://www.youtube bing.com" },  { name: "Google", url: "https://www.google bing.com" },  { name: "Gmail", url: "https://mail.google bing.com" },  { name: "X", url: "https://x bing.com" }];
+window.onload = () => {  loadSavedSettings();  updateUser();  renderRanking();  renderShortcuts();    if (tabs.length === 0) {    addTab();  }};
+/* ===== 設定の読み込みと適用 ===== */function loadSavedSettings() {  const theme = localStorage.getItem("themeMode") || "dark";  const color = localStorage.getItem("bgColor") || "#202124";  const bgImg = localStorage.getItem("bgImage");
+  document.getElementById("themeMode").value = theme;  document.getElementById("bgColor").value = color;
+  applyTheme(theme, color, bgImg);}
+function applySettings() {  const theme = document.getElementById("themeMode").value;  const color = document.getElementById("bgColor").value;  const fileInput = document.getElementById("bgImage");
+  if (fileInput.files && fileInput.files[0]) {    const reader = new FileReader();    reader.onload = function (e) {      const imgData = e.target.result;      localStorage.setItem("bgImage", imgData);      saveAndApplyTheme(theme, color, imgData);    };    reader.readAsDataURL(fileInput.files[0]);  } else {    const currentImg = localStorage.getItem("bgImage");    saveAndApplyTheme(theme, color, currentImg);  }}
+function saveAndApplyTheme(theme, color, bgImg) {  localStorage.setItem("themeMode", theme);  localStorage.setItem("bgColor", color);  applyTheme(theme, color, bgImg);  closeSettings();}
+function applyTheme(theme, color, bgImg) {  if (theme === "light") {    document.body.classList.add("light-mode");  } else {    document.body.classList.remove("light-mode");  }
+  if (bgImg) {    document.body.style.backgroundImage = `url(${bgImg})`;  } else {    document.body.style.backgroundImage = "none";    document.body.style.backgroundColor = color || "#202124";  }}
+function removeBgImage() {  localStorage.removeItem("bgImage");  document.getElementById("bgImage").value = "";  const theme = document.getElementById("themeMode").value;  const color = document.getElementById("bgColor").value;  applyTheme(theme, color, null);}
+/* ===== ショートカット＆トレンド ===== */function renderRanking() {  const container = document.getElementById("rankingList");  if (!container) return;
+  const shuffled = [...trendPool].sort(() => 0.5 - Math.random());  const selected = shuffled.slice(0, 4);
+  container.innerHTML = selected.map((item, index) => `    <div onclick="goTrend('${item}')" style="padding:4px 0; cursor:pointer; font-size:12px; display:flex; gap:8px;">      <span style="color:#8ab4f8; font-weight:bold;">${index + 1}</span>      <span>${item}</span>    </div>  `).join("");}
+function getShortcuts() {  const saved = localStorage.getItem("shortcuts");  return saved ? JSON.parse(saved) : defaultShortcuts;}
+function renderShortcuts() {  const container = document.getElementById("shortcutList");  if (!container) return;
+  const shortcuts = getShortcuts();
+  let html = shortcuts.map((sc, index) => {    const faviconUrl = `https://www.google.com/s2/favicons?domain=${encodeURIComponent(sc.url)}&sz=64`;    const firstLetter = sc.name ? sc.name[0].toUpperCase() : "🔗";
+    return `      <div class="shortcut-item" onclick="openShortcut('${sc.url}')" oncontextmenu="removeShortcut(event, ${index})">        <div class="shortcut-icon">          <img src="${faviconUrl}" onerror="this.onerror=null; this.parentNode.innerText='${firstLetter}';">        </div>        <div class="shortcut-label">${sc.name}</div>      </div>    `;  }).join("");
+  html += `    <div class="shortcut-item shortcut-add" onclick="openShortcutModal()">      <div class="shortcut-icon" style="background:transparent; font-size:16px;">＋</div>      <div class="shortcut-label">追加</div>    </div>  `;
+  container.innerHTML = html;}
+function openShortcut(url) {  if (tabs.length === 0) addTab();  tabs[current].frame.src = url;  updateUrlBar(url);  document.getElementById("home").style.display = "none";  tabs[current].frame.style.display = "block";}
+function openShortcutModal() {  document.getElementById("scName").value = "";  document.getElementById("scUrl").value = "";  document.getElementById("shortcutModal").style.display = "flex";}
+function closeShortcutModal() {  document.getElementById("shortcutModal").style.display = "none";}
+function saveShortcut() {  const name = document.getElementById("scName").value.trim();  let url = document.getElementById("scUrl").value.trim();
+  if (!name || !url) return alert("名前とURLの両方を入力してください");
+  if (!url.startsWith("http://") && !url.startsWith("https://")) {    url = "https://" + url;  }
+  const shortcuts = getShortcuts();  shortcuts.push({ name, url });  localStorage.setItem("shortcuts", JSON.stringify(shortcuts));
+  renderShortcuts();  closeShortcutModal();}
+function removeShortcut(event, index) {  event.preventDefault();  if (confirm("このショートカットを削除しますか？")) {    const shortcuts = getShortcuts();    shortcuts.splice(index, 1);    localStorage.setItem("shortcuts", JSON.stringify(shortcuts));    renderShortcuts();  }}
+function goTrend(keyword){  if(tabs.length === 0) addTab();  const url = buildSearch(keyword);  tabs[current].frame.src = url;  updateUrlBar(url);  document.getElementById("home").style.display = "none";  tabs[current].frame.style.display = "block";}
+function login() {  const user = document.getElementById("username").value;  if (!user) return alert("入力してください");  localStorage.setItem("user", user);  updateUser();  closeLogin();}
+function updateUser() {  const user = localStorage.getItem("user");  document.getElementById("userIcon").innerText = user ? user[0].toUpperCase() : "👤";  document.getElementById("accountInfo").innerText = user ? "ログイン中: " + user : "未ログイン";}
+function openSettings(){ document.getElementById("settingsModal").style.display="flex"; }function closeSettings(){ document.getElementById("settingsModal").style.display="none"; }function openLogin(){ document.getElementById("loginModal").style.display="flex"; }function closeLogin(){ document.getElementById("closeLogin") || closeLoginModal(); }function closeLoginModal(){ document.getElementById("loginModal").style.display="none"; }
+/* ===== タブ管理機能 ===== */function addTab(url=""){  const obj = {};  obj.tab = document.createElement("div");  obj.tab.className = "tab";
+  /* タブの左側に logo.png を挿入 */  obj.tab.innerHTML = `    <img src="10908-removebg-preview.png" alt="logo" onerror="this.style.display='none'">    <span class="tab-title">${url ? url : "新しいタブ"}</span>    <span class="tab-close">×</span>  `;
+  obj.frame = document.createElement("iframe");  if(url) obj.frame.src = url;
+  document.getElementById("tabContainer").appendChild(obj.tab);  document.getElementById("views").appendChild(obj.frame);
+  obj.tab.onclick = () => switchTab(obj);  obj.tab.querySelector(".tab-close").onclick = (e)=>{    e.stopPropagation();    closeTab(obj);  };
+  tabs.push(obj);  switchTab(obj);}
+function switchTab(obj){  tabs.forEach(t=>{    t.tab.classList.remove("active");    t.frame.style.display="none";  });    obj.tab.classList.add("active");  current = tabs.indexOf(obj);
+  const homeEl = document.getElementById("home");  const searchInput = document.getElementById("searchInput");
+  if(!obj.frame.src || obj.frame.src === "about:blank" || obj.frame.src === window.location.href) {    homeEl.style.display = "flex";    updateUrlBar("");    if(searchInput) searchInput.value = "";  } else {    homeEl.style.display = "none";    obj.frame.style.display = "block";    updateUrlBar(obj.frame.src);  }}
+function closeTab(obj){  const i = tabs.indexOf(obj);  obj.tab.remove();  obj.frame.remove();  tabs.splice(i, 1);
+  if (tabs.length === 0) {    current = -1;    document.getElementById("home").style.display = "flex";    updateUrlBar("");    return;  }  switchTab(tabs[Math.max(0, i - 1)]);}
+function buildSearch(input){  if(!input) return "";  if(input.startsWith("http://") || input.startsWith("https://")) return input;  if(input.includes(".") && !input.includes(" ")) return "https://" + input;  return "https://www.bing.com/search?q=" + encodeURIComponent(input);}
+function go(){  if(tabs.length===0) addTab();  let input = document.getElementById("url").value.trim();  if(!input) return;    let targetUrl = buildSearch(input);  tabs[current].frame.src = targetUrl;    tabs[current].tab.querySelector(".tab-title").innerText = input;  document.getElementById("home").style.display = "none";  tabs[current].frame.style.display = "block";}
+function updateUrlBar(url){  const el = document.getElementById("url");  if(el) el.value = url;}
+function goHome(){  let input = document.getElementById("searchInput").value.trim();  if(!input) return;    document.getElementById("url").value = input;  go();}
+function back(){ try{tabs[current].frame.contentWindow.history.back()}catch{} }function forward(){ try{tabs[current].frame.contentWindow.history.forward()}catch{} }
+function showSettingTab(id){  document.querySelectorAll(".tab-content").forEach(e=>e.style.display="none");  document.getElementById(id).style.display="flex";}
+document.addEventListener("keydown", e=>{  if(e.ctrlKey && e.key==="t"){e.preventDefault();addTab();}  if(e.ctrlKey && e.key==="w"){e.preventDefault();if(current>=0) closeTab(tabs[current]);}});
+document.getElementById("newTab").onclick = () => addTab();
+/* ===== AI アシスタント ===== */function toggleAI(){  const panel = document.getElementById("aiPanel");  panel.style.display = panel.style.display === "flex" ? "none" : "flex";}
+function addMessage(role, text){  const chat = document.getElementById("aiChat");  const wrap = document.createElement("div");  wrap.className = `message ${role}`;
+  const bubble = document.createElement("div");  bubble.className = "bubble";  bubble.innerText = text;
+  const time = document.createElement("div");  time.style.cssText = "font-size:10px;opacity:0.6;text-align:right;margin-top:4px;";  time.innerText = new Date().toLocaleTimeString().slice(0,5);
+  bubble.appendChild(time);  wrap.appendChild(bubble);  chat.appendChild(wrap);  chat.scrollTop = chat.scrollHeight;
+  return bubble;}
+function sendAI() {  const inputEl = document.getElementById("aiInput");  const text = inputEl.value.trim();  if (!text) return;
+  addMessage("user", text);  inputEl.value = "";
+  setTimeout(() => {    const response = getRuleBasedResponse(text);    addMessage("ai", response);  }, 400);}
+function getRuleBasedResponse(input) {  const query = input.toLowerCase();
+  if (query.includes("こんにちは") || query.includes("ハロー") || query.includes("hello")) {    return "こんにちは！何かお手伝いできることはありますか？";  }  if (query.includes("名前") || query.includes("だれ") || query.includes("誰")) {    return "私はwheelブラウザのAIアシスタントです。";  }  if (query.includes("使い方") || query.includes("ヘルプ")) {    return "検索窓からウェブを検索したり、ショートカットや人気ランキングから目的のページへ素早くアクセスできます。";  }  if (query.includes("検索") || query.includes("調べ")) {    return "上部の入力バーか中央の検索欄にキーワードを入力して「検索」を押してください。";  }  if (query.includes("ありがとう") || query.includes("感謝")) {    return "どういたしまして！いつでも声をかけてくださいね。";  }
+  return `「${input}」についてですね。お調べしますか？上の検索窓に「${input}」と入力して検索してみてください！`;}</script></body></html>
